@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lab 7</title>
+<style type="text/css">
+	
+#myCanvas{
+	display: block;
+	margin: 15px;
+}
+button{
+	margin: 10px;
+}
+
+</style>
+
+</head>
+<body onload="main()">
+
+
+
+<canvas id="myCanvas" width="512" height="512"></canvas>
+
+
+
+<script  id='vertex-shader' type="x-shader/x-vertex">
+	attribute vec4 a_Position;
+    uniform mat4 u_projectionMatrix;
+	uniform mat4 u_modelMatrix;
+	uniform mat4 u_viewingMatrix;
+	
+	void main()
+	{
+		gl_Position = a_Position*u_projectionMatrix*u_modelMatrix*u_viewingMatrix;
+		gl_PointSize = 2.5;
+	}	
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+	precision mediump float;
+	uniform vec4 u_Frag_Color;
+	void main()
+	{
+
+		gl_FragColor  = u_Frag_Color;
+	}		
+</script>
+
+
+<script src="./lib/webgl-utils.js"></script>
+<script src="./lib/webgl-debug.js"></script>
+<script src="./lib/cuon-utils.js"></script>
+<script src="./lib/initShaders.js"></script>
+<script src="./lib/flatten.js"></script>
+<script src= "./lib/gl-matrix-min.js"></script>
+<script src= "./lib/dat.gui.min.js"></script>
+
+<script src= "./lib/Transformation.js"></script>
+
+<script src="Lab7_Complete.js"></script>
+
+</body>
+</html>
