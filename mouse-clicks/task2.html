@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+<TITLE> The Canvas Tag</TITLE>
+<SCRIPT>
+
+function initialise(){
+	 canvas= document.getElementById("canvas_1");
+	 gl = getWebGLContext(canvas);
+	if (!gl){
+		console.log('Failed to find context');
+	}
+
+	var program = initShaders( gl, "vertex-shader", "fragment-shader" );
+	gl.useProgram (program);
+	gl.program = program;
+
+	 a_Position = gl.getAttribLocation(program, 'a_Position');
+	if (a_Position < 0) { 
+		console.log ("Failed to Get Position"); 
+		return;	
+	}
+	
+
+	
+	canvas.addEventListener("mousedown", doMouseDown,false)
+}
+
+function render (gl){
+	//gl.clearColor(0.0, 0.0, 0.0, 1.0);
+	//gl.clear(gl.COLOR_BUFFER_BIT);
+	gl.drawArrays(gl.Points, 0, 4);
+	
+}
+
+
+var points =[];
+
+function doMouseDown(event){
+	canvas_x=event.pageX;
+	canvas_y=event.pageY;
+	
+	x_coord= (canvas_x - (canvas.width /2)) / (canvas.width/2)
+	y_coord= -(canvas_y - (canvas.height /2)) / (canvas.height/2)
+	//gl.vertexAttrib4f(a_Position, x_coord+0.05, y_coord, 1.0, 1.0);
+	//gl.vertexAttrib4f(a_Position, x_coord+0.25, y_coord+0.25, 1.0, 1.0);
+	points.push(x_coord);
+	points.push(y_coord);
+	points.push(x_coord);
+	points.push(y_coord);
+	points.push(x_coord);
+	points.push(y_coord);
+	points.push(x_coord);
+	points.push(y_coord);
+	
+	 var len = points.length;
+    for (var i = 0; i < len; i += 2)
+    {
+	
+	gl.vertexAttrib4f(a_Position, points[i]-0.25, points[i+1], 1.0, 1.0);
+	points[i+2] += 0.25;
+	points[i+3] += 0.25;
+	points[i+4] += 0.25;
+	points[i+5] -= 0.25;
+	points[i+6] -= 0.25;
+	points[i+7] -= 0.25;
+	render(gl);
+	
+	}
+	
+	points=[];
+
+
+}
+
+
+</SCRIPT>
+</HEAD>
+
+
+
+<BODY onLoad=initialise()>
+<CANVAS WIDTH="400" HEIGHT="400" ID="canvas_1"  style="background-color:black ">
+
+</CANVAS>
+<script id="vertex-shader" type="x-shader/x-vertex">		
+		attribute vec4 a_Position;
+		void
+		main()
+		{
+		  gl_Position = a_Position;
+		  gl_PointSize = 5.0;
+		}
+	</script>
+
+	<script id="fragment-shader" type="x-shader/x-fragment">
+		precision mediump float;
+		void
+		main()
+		{
+		    gl_FragColor = vec4(0.1, 1.0, 0.1, 1.0);
+		}
+	</script>
+	  
+
+  <script src="lib/webgl-utils.js"></script>
+    <script src="lib/webgl-debug.js"></script>
+    <script src="lib/cuon-utils.js"></script>
+	<script src="lib/initShaders.js"></script>
+    
+
+
+</BODY>
+</HTML>
